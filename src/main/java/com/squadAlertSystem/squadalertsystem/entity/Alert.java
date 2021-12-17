@@ -2,6 +2,8 @@ package com.squadAlertSystem.squadalertsystem.entity;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -9,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.squadAlertSystem.squadalertsystem.constant.Severity;
@@ -67,6 +70,10 @@ public class Alert {
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "id", nullable = false)
   private Page page;
+
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "alert", fetch = FetchType.LAZY)
+  private Set<Notification> notifications;
+
 
   @Override
   public boolean equals(Object o) {
