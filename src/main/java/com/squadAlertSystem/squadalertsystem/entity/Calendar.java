@@ -33,7 +33,7 @@ public class Calendar {
   private String id;
 
   @Column(name = "date")
-  private long date;
+  private Date date;
 
   @Column(name = "start_time")
   private String startTime;
@@ -42,16 +42,14 @@ public class Calendar {
   private String endTime;
 
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "squad", referencedColumnName = "id")
+  @JoinColumn(name = "id", nullable = false)
   private Squad squad;
 
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "pic", referencedColumnName = "id")
-  private Member pic;
+  @Column(name = "pics")
+  private String pics;
 
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "watcher", referencedColumnName = "id")
-  private Member watcher;
+  @Column(name = "watcher")
+  private String watchers;
 
   @Override
   public boolean equals(Object o) {

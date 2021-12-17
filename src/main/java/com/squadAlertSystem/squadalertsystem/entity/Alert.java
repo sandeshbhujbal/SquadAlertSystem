@@ -57,7 +57,7 @@ public class Alert {
   private String sentBy;
 
   @Column(name = "generated_date")
-  private long generatedDate;
+  private Date generatedDate;
 
   @Column(name = "sent_to")
   private String sentTo;

@@ -1,5 +1,6 @@
 package com.squadAlertSystem.squadalertsystem.entity;
 
+import java.util.Date;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -45,7 +46,7 @@ public class Notification {
   private String sentTo;
 
   @Column(name = "trigger_time")
-  private long triggerTime;
+  private Date triggerTime;
 
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "alert", referencedColumnName = "id")
