@@ -1,5 +1,6 @@
 package com.squadAlertSystem.squadalertsystem.entity;
 
+import java.util.Date;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +18,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.GenericGenerator;
 
 @Builder
 @Entity
@@ -29,6 +31,7 @@ public class Notification {
 
   @Id
   @GeneratedValue(generator = "system-uuid")
+  @GenericGenerator(name = "system-uuid", strategy = "uuid2")
   @Column(name = "id", updatable = false, nullable = false)
   private String id;
 
@@ -45,7 +48,7 @@ public class Notification {
   private String sentTo;
 
   @Column(name = "trigger_time")
-  private long triggerTime;
+  private Date triggerTime;
 
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "alert", referencedColumnName = "id")

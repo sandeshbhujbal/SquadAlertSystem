@@ -17,6 +17,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.GenericGenerator;
 
 @Builder
 @Entity
@@ -29,29 +30,30 @@ public class Calendar {
 
   @Id
   @GeneratedValue(generator = "system-uuid")
+  @GenericGenerator(name = "system-uuid", strategy = "uuid2")
   @Column(name = "id", updatable = false, nullable = false)
   private String id;
 
   @Column(name = "date")
-  private long date;
+  private Date date;
 
   @Column(name = "start_time")
-  private String startTime;
+  private Date startDateTime;
 
   @Column(name = "end_time")
-  private String endTime;
+  private Date endDateTime;
 
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "squad", referencedColumnName = "id")
   private Squad squad;
 
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "pic", referencedColumnName = "id")
-  private Member pic;
+  //comma separated list of members
+  @Column(name = "pics")
+  private String pics;
 
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "watcher", referencedColumnName = "id")
-  private Member watcher;
+  //comma separated list of members
+  @Column(name = "watcher")
+  private String watchers;
 
   @Override
   public boolean equals(Object o) {

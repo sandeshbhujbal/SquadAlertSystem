@@ -23,6 +23,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.GenericGenerator;
 
 @Builder
 @Entity
@@ -35,6 +36,7 @@ public class Alert {
 
   @Id
   @GeneratedValue(generator = "system-uuid")
+  @GenericGenerator(name = "system-uuid", strategy = "uuid2")
   @Column(name = "id", updatable = false, nullable = false)
   private String id;
 
@@ -57,7 +59,7 @@ public class Alert {
   private String sentBy;
 
   @Column(name = "generated_date")
-  private long generatedDate;
+  private Date generatedDate;
 
   @Column(name = "sent_to")
   private String sentTo;
@@ -68,13 +70,8 @@ public class Alert {
   @Column(name = "updated_by")
   private String updatedBy;
 
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "page", referencedColumnName = "id")
-  private Page page;
-
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "alert", fetch = FetchType.LAZY)
   private Set<Notification> notifications;
-
 
   @Override
   public boolean equals(Object o) {
