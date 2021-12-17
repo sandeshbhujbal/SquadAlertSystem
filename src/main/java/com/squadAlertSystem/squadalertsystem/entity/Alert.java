@@ -70,13 +70,8 @@ public class Alert {
   @Column(name = "updated_by")
   private String updatedBy;
 
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "page", referencedColumnName = "id")
-  private Page page;
-
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "alert", fetch = FetchType.LAZY)
   private Set<Notification> notifications;
-
 
   @Override
   public boolean equals(Object o) {

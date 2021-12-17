@@ -47,9 +47,11 @@ public class Calendar {
   @JoinColumn(name = "squad", referencedColumnName = "id")
   private Squad squad;
 
+  //comma separated list of members
   @Column(name = "pics")
   private String pics;
 
+  //comma separated list of members
   @Column(name = "watcher")
   private String watchers;
 
