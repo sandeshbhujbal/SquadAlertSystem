@@ -47,8 +47,11 @@ public class Notification {
   @Column(name = "sent_to")
   private String sentTo;
 
-  @Column(name = "trigger_time")
-  private Date triggerTime;
+  @Column(name = "created_date")
+  private Date createdDate;
+
+  @Column(name = "last_sync_at")
+  private Date lastSyncAt;
 
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "alert", referencedColumnName = "id")
