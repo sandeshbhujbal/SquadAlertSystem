@@ -1,4 +1,4 @@
-package com.squadAlertSystem.squadalertsystem.command.squad.impl;
+package com.squadAlertSystem.squadalertsystem.service.squad;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import com.squadAlertSystem.squadalertsystem.command.squad.SquadCommand;
 import com.squadAlertSystem.squadalertsystem.dto.request.CreateSquadRequest;
 import com.squadAlertSystem.squadalertsystem.dto.request.SquadListingRequest;
 import com.squadAlertSystem.squadalertsystem.dto.response.SquadDetailResponse;
@@ -25,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-public class SquadCommandImpl implements SquadCommand {
+public class SquadService  {
 
   @Autowired
   private SquadRepository squadRepository;
@@ -36,7 +35,6 @@ public class SquadCommandImpl implements SquadCommand {
   @Autowired
   private MemberRepository memberRepository;
 
-  @Override
   public String createSquad(CreateSquadRequest request) {
     log.info("receive request to create squad {}", request);
     List<Member> memberList = validateServices(request);
@@ -56,7 +54,6 @@ public class SquadCommandImpl implements SquadCommand {
     return squad.getId();
   }
 
-  @Override
   public List<SquadListingResponse> listSquads(SquadListingRequest request) {
     log.info("listing squads");
     List<Squad> squadList = squadRepository.listSquads(request);
@@ -66,7 +63,6 @@ public class SquadCommandImpl implements SquadCommand {
     return squadListingResponse;
   }
 
-  @Override
   public SquadDetailResponse getSquadDetail(String squadId) {
     log.info("squad details");
     Squad squad = squadRepository.findById(squadId).get();
