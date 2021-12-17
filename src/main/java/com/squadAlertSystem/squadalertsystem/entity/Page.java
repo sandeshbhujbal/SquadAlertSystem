@@ -54,9 +54,6 @@ public class Page {
   @Column(name = "created_date")
   private Date createdDate;
 
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "page", fetch = FetchType.LAZY)
-  private Set<Alert> alerts;
-
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
