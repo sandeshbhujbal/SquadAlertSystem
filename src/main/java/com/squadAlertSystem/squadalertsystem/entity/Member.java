@@ -14,6 +14,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.util.StringUtils;
+import javax.persistence.criteria.Predicate;
 
 @Builder
 @Entity
@@ -50,5 +53,15 @@ public class Member {
   @Override
   public int hashCode() {
     return getClass().hashCode();
+  }
+
+  public static Specification<Member> nameLike(final String name) {
+    return (Specification<Member>) (root, query, cb) -> {
+      Predicate predicate = null;
+      if(!StringUtils.isEmpty(name)) {
+        predicate = cb.like(root.<String>get("name"), "%" + name + "%");
+      }
+      return predicate;
+    };
   }
 }
