@@ -14,7 +14,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.squadAlertSystem.squadalertsystem.dto.response.SquadDetailResponse;
 import com.squadAlertSystem.squadalertsystem.dto.response.SquadListingResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -51,7 +50,7 @@ public class Squad {
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "squad", fetch = FetchType.LAZY)
   private Set<Service> services;
 
-  @ManyToMany(fetch = FetchType.EAGER)
+  @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(
     name = "squad_member_mapping",
     joinColumns = {@JoinColumn(name = "squad_id")},
@@ -60,7 +59,7 @@ public class Squad {
   private Set<Member> members;
 
 
-  @ManyToMany(fetch = FetchType.EAGER)
+  @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(
     name = "squad_alert_configuration_mapping",
     joinColumns = {@JoinColumn(name = "squad_id")},

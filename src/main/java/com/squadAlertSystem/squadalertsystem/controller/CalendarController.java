@@ -3,7 +3,7 @@ package com.squadAlertSystem.squadalertsystem.controller;
 import java.util.Date;
 import java.util.List;
 
-import com.squadAlertSystem.squadalertsystem.service.Calendar.CalendarService;
+import com.squadAlertSystem.squadalertsystem.service.calendar.CalendarService;
 import com.squadAlertSystem.squadalertsystem.dto.request.CalendarListRequest;
 import com.squadAlertSystem.squadalertsystem.dto.request.CalendarSaveRequest;
 import com.squadAlertSystem.squadalertsystem.dto.response.CalendarResponse;

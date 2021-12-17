@@ -26,8 +26,6 @@ public class CalendarSaveRequest {
 
   private Date endDateTime;
 
-  private List<String> pics;
-
-  private List<String> watchers;
+  private List<String> picNames;
 
 }
