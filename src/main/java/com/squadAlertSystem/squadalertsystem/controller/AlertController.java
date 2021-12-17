@@ -1,5 +1,6 @@
 package com.squadAlertSystem.squadalertsystem.controller;
 
+import com.squadAlertSystem.squadalertsystem.constant.Status;
 import com.squadAlertSystem.squadalertsystem.dto.response.PaginatedResponse;
 import com.squadAlertSystem.squadalertsystem.entity.Alert;
 import com.squadAlertSystem.squadalertsystem.service.AlertService;
@@ -22,10 +23,11 @@ public class AlertController {
     private AlertService alertService;
 
     @GetMapping("/list")
-    public PaginatedResponse<Alert> getAll(@RequestParam(required = false) String squad,
+    public PaginatedResponse<Alert> getAll(@RequestParam(required = true) String squad,
+                                           @RequestParam(required = false) Status status,
                                            @RequestParam(defaultValue = "0") int page,
                                            @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return alertService.getAll(squad, pageable);
+        return alertService.getAll(squad, status, pageable);
     }
 }
