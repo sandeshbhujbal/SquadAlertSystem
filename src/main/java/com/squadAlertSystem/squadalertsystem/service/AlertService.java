@@ -6,8 +6,11 @@ import com.squadAlertSystem.squadalertsystem.entity.Alert;
 import com.squadAlertSystem.squadalertsystem.repository.AlertRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author Milan Rathod
@@ -30,5 +33,12 @@ public class AlertService {
         paginatedResponse.setTotalElements(pages.getTotalElements());
 
         return paginatedResponse;
+    }
+
+    public List<Alert> findAllBySquadAndStatus(String squad, Status status) {
+        Pageable pageable = PageRequest.of(1, Integer.MAX_VALUE);
+        final Page<Alert> alertPages = alertRepository.findAllBySquadAndStatus(squad, status, pageable);
+
+        return alertPages.getContent();
     }
 }

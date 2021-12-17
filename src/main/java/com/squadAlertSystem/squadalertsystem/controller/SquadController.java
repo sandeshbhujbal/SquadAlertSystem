@@ -3,6 +3,7 @@ package com.squadAlertSystem.squadalertsystem.controller;
 import java.util.List;
 
 import com.squadAlertSystem.squadalertsystem.dto.request.AddMemberRequest;
+import com.squadAlertSystem.squadalertsystem.entity.Squad;
 import com.squadAlertSystem.squadalertsystem.service.squad.SquadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,6 +45,11 @@ public class SquadController {
   @PostMapping(path = "/add-member")
   public String addMember(@RequestBody AddMemberRequest request) {
     return squadService.addMember(request);
+  }
+
+  @GetMapping("/get-all-by-member")
+  public List<Squad> getAllSquadByMember(@RequestParam String member) {
+    return squadService.getAllSquadsByMember(member);
   }
 
 }
