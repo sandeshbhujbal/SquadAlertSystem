@@ -1,4 +1,4 @@
-package com.squadAlertSystem.squadalertsystem.command.member;
+package com.squadAlertSystem.squadalertsystem.service.member;
 
 import com.squadAlertSystem.squadalertsystem.dto.request.CreateMemberRequest;
 import com.squadAlertSystem.squadalertsystem.dto.response.GetMemberResponse;
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-public class MemberCommand {
+public class MemberService {
 
   @Autowired
   private MemberRepository memberRepository;
