@@ -15,8 +15,10 @@ import com.squadAlertSystem.squadalertsystem.dto.request.CreateSquadRequest;
 import com.squadAlertSystem.squadalertsystem.dto.request.SquadListingRequest;
 import com.squadAlertSystem.squadalertsystem.dto.response.SquadDetailResponse;
 import com.squadAlertSystem.squadalertsystem.dto.response.SquadListingResponse;
+import com.squadAlertSystem.squadalertsystem.entity.AlertConfiguration;
 import com.squadAlertSystem.squadalertsystem.entity.Member;
 import com.squadAlertSystem.squadalertsystem.entity.Squad;
+import com.squadAlertSystem.squadalertsystem.repository.AlertConfigurationRepository;
 import com.squadAlertSystem.squadalertsystem.repository.MemberRepository;
 import com.squadAlertSystem.squadalertsystem.repository.ServiceRepository;
 import com.squadAlertSystem.squadalertsystem.repository.SquadRepository;
@@ -35,21 +37,30 @@ public class SquadService  {
   @Autowired
   private MemberRepository memberRepository;
 
+  @Autowired
+  private AlertConfigurationRepository alertConfigurationRepository;
+
   public String createSquad(CreateSquadRequest request) {
     log.info("receive request to create squad {}", request);
     List<Member> memberList = validateServices(request);
     List<com.squadAlertSystem.squadalertsystem.entity.Service> serviceList = validateMembers(request);
     Squad squad = new Squad();
+    BeanUtils.copyProperties(request, squad);
+    List<AlertConfiguration> alertConfigurationList = request.getAlertConfigurations();
     if(StringUtils.isEmpty(request.getId())) {
-      BeanUtils.copyProperties(request, squad);
       squad.setMembers(new HashSet<>(memberList));
       squad.setServices(new HashSet<>(serviceList));
+      squad.setAlertConfigurations(new HashSet<>(alertConfigurationList));
+      squad.setPageId(buildPageId(request.getEmailId()));
     } else {
-      BeanUtils.copyProperties(request, squad);
+      squad = squadRepository.findById(request.getId()).get();
       squad.getMembers().addAll(memberList);
       squad.getServices().addAll(serviceList);
+      squad.getAlertConfigurations().addAll(alertConfigurationList);
     }
-    squad.setPageId(buildPageId(request.getName()));
+    if(Objects.nonNull(request.getAlertConfigurations())) {
+      alertConfigurationList = alertConfigurationRepository.saveAll(request.getAlertConfigurations());
+    }
     squad = squadRepository.save(squad);
     return squad.getId();
   }
@@ -57,10 +68,9 @@ public class SquadService  {
   public List<SquadListingResponse> listSquads(SquadListingRequest request) {
     log.info("listing squads");
     List<Squad> squadList = squadRepository.listSquads(request);
-    List<SquadListingResponse> squadListingResponse = squadList.stream()
+    return squadList.stream()
       .map(Squad::toSquadListingResponse)
       .collect(Collectors.toList());
-    return squadListingResponse;
   }
 
   public SquadDetailResponse getSquadDetail(String squadId) {

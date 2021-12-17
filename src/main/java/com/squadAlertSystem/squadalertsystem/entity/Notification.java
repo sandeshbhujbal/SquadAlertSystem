@@ -45,7 +45,7 @@ public class Notification {
   private String details;
 
   @Column(name = "sent_to")
-  private String sentTo;
+  private String picName;
 
   @Column(name = "trigger_time")
   private Date triggerTime;

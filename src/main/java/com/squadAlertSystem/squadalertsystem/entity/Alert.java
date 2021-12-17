@@ -62,7 +62,7 @@ public class Alert {
   private Date generatedDate;
 
   @Column(name = "sent_to")
-  private String sentTo;
+  private String sentTo; //comma-separated pics
 
   @Column(name = "updated_date")
   private Date updatedDate;

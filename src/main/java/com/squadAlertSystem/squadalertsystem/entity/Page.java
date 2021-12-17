@@ -37,7 +37,7 @@ public class Page {
   private String id;
 
   @Column(name = "page_to")
-  private String pageTo;
+  private String pageTo; //page-id
 
   @Column(name = "channel")
   private String channel;
