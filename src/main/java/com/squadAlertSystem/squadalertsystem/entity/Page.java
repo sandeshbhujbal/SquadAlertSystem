@@ -36,6 +36,9 @@ public class Page {
   @Column(name = "id", updatable = false, nullable = false)
   private String id;
 
+  @Column(name = "page_to")
+  private String pageTo;
+
   @Column(name = "channel")
   private String channel;
 
