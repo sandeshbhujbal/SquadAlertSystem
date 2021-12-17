@@ -3,7 +3,6 @@ package com.squadAlertSystem.squadalertsystem.dto.response;
 import java.util.Date;
 import java.util.List;
 
-import com.squadAlertSystem.squadalertsystem.entity.Squad;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,9 +24,8 @@ public class CalendarResponse {
 
   private Date endDateTime;
 
-  private Squad squad;
+  private String squadName;
 
-  private List<String> pics;
+  private List<String> picNames;
 
-  private List<String> watchers;
 }

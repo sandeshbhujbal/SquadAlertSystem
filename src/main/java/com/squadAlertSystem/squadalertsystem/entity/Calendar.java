@@ -51,10 +51,6 @@ public class Calendar {
   @Column(name = "pics")
   private String pics;
 
-  //comma separated list of members
-  @Column(name = "watcher")
-  private String watchers;
-
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;

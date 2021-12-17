@@ -1,8 +1,15 @@
-package com.squadAlertSystem.squadalertsystem.service.Calendar;
+package com.squadAlertSystem.squadalertsystem.service.calendar;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
+
+import javax.persistence.Column;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import com.squadAlertSystem.squadalertsystem.dto.request.CalendarListRequest;
 import com.squadAlertSystem.squadalertsystem.dto.request.CalendarSaveRequest;
@@ -14,6 +21,7 @@ import com.squadAlertSystem.squadalertsystem.repository.SquadRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 @Service
 public class CalendarService {
@@ -26,10 +34,16 @@ public class CalendarService {
 
   public String saveCalendar(CalendarSaveRequest request) {
 
-    Calendar calendar = new Calendar();
-    BeanUtils.copyProperties(request, calendar);
-    calendar.setPics(String.join(", ", request.getPics()));
-    calendar.setPics(String.join(", ", request.getWatchers()));
+    Calendar calendar = Calendar.builder()
+      .id(request.getId())
+      .date(request.getDate())
+      .startDateTime(request.getStartDateTime())
+      .endDateTime(request.getEndDateTime())
+      .build();
+
+    if (!CollectionUtils.isEmpty(request.getPicNames())) {
+      calendar.setPics(String.join(", ", request.getPicNames()));
+    }
 
     Squad squad = squadRepository.findById(request.getSquadId()).get();
     calendar.setSquad(squad);
@@ -44,11 +58,15 @@ public class CalendarService {
   }
 
   private CalendarResponse toCalendarResponse(Calendar calendar) {
-    CalendarResponse calendarResponse = new CalendarResponse();
-    BeanUtils.copyProperties(calendar, calendarResponse);
-    calendarResponse.setPics(Arrays.asList(calendar.getPics().split(",")));
-    calendarResponse.setWatchers(Arrays.asList(calendar.getWatchers().split(",")));
-    return calendarResponse;
+    return CalendarResponse.builder()
+      .id(calendar.getId())
+      .date(calendar.getDate())
+      .startDateTime(calendar.getStartDateTime())
+      .endDateTime(calendar.getEndDateTime())
+      .squadName(calendar.getSquad().getName())
+      .picNames(Arrays.asList(calendar.getPics().split(",")))
+      .build();
+
   }
 
 }
