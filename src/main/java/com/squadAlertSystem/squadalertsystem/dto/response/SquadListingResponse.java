@@ -1,6 +1,4 @@
-package com.squadAlertSystem.squadalertsystem.dto.request;
-
-import java.util.List;
+package com.squadAlertSystem.squadalertsystem.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,15 +9,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateSquadRequest {
+public class SquadListingResponse {
 
   private String id;
 
   private String name;
 
-  private String description;
-
-  private List<String> members;
-
-  private List<String> services;
+  private String pageId;
 }

@@ -14,6 +14,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.squadAlertSystem.squadalertsystem.dto.response.SquadDetailResponse;
+import com.squadAlertSystem.squadalertsystem.dto.response.SquadListingResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -80,5 +82,13 @@ public class Squad {
   @Override
   public int hashCode() {
     return getClass().hashCode();
+  }
+
+  public static SquadListingResponse toSquadListingResponse(Squad squad) {
+    return SquadListingResponse.builder()
+      .id(squad.getId())
+      .name(squad.getName())
+      .pageId(squad.getPageId())
+      .build();
   }
 }
