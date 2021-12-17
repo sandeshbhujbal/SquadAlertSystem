@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.squadAlertSystem.squadalertsystem.dto.request.AddMemberRequest;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -95,6 +98,20 @@ public class SquadService  {
         .collect(Collectors.toList());
     }
     return new ArrayList<>();
+  }
+
+  public String addMember(AddMemberRequest request) {
+    Optional<Squad> squadOptional = squadRepository.findById(request.getSquadId());
+    Optional<Member> memberOptional = memberRepository.findById(request.getMemberId());
+    if(squadOptional.isPresent() && memberOptional.isPresent()) {
+      Squad squad = squadOptional.get();
+      Set<Member> memberSet = squad.getMembers();
+      memberSet.add(memberOptional.get());
+      squad.setMembers(memberSet);
+      squad = squadRepository.save(squad);
+      return squad.getId();
+    }
+    return null;
   }
 
 }
