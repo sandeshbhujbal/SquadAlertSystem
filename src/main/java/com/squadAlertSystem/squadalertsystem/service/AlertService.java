@@ -1,5 +1,6 @@
 package com.squadAlertSystem.squadalertsystem.service;
 
+import com.squadAlertSystem.squadalertsystem.constant.Status;
 import com.squadAlertSystem.squadalertsystem.dto.response.PaginatedResponse;
 import com.squadAlertSystem.squadalertsystem.entity.Alert;
 import com.squadAlertSystem.squadalertsystem.repository.AlertRepository;
@@ -17,9 +18,9 @@ public class AlertService {
     @Autowired
     private AlertRepository alertRepository;
 
-    public PaginatedResponse<Alert> getAll(String squad, Pageable pageable) {
+    public PaginatedResponse<Alert> getAll(String squad, Status status, Pageable pageable) {
         Page<Alert> pages = squad != null ?
-            alertRepository.findAllBySquad(squad, pageable) : alertRepository.findAll(pageable);
+            alertRepository.findAllBySquadAndStatus(squad, status, pageable) : alertRepository.findAllByStatus(status, pageable);
 
         PaginatedResponse<Alert> paginatedResponse = new PaginatedResponse<>();
 

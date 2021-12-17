@@ -61,6 +61,7 @@ public class Alert {
   @Column(name = "generated_date")
   private Date generatedDate;
 
+  //comma separated names of users
   @Column(name = "sent_to")
   private String sentTo;
 
