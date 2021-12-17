@@ -17,6 +17,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.GenericGenerator;
 
 @Builder
 @Entity
@@ -29,6 +30,7 @@ public class Calendar {
 
   @Id
   @GeneratedValue(generator = "system-uuid")
+  @GenericGenerator(name = "system-uuid", strategy = "uuid2")
   @Column(name = "id", updatable = false, nullable = false)
   private String id;
 
@@ -36,13 +38,13 @@ public class Calendar {
   private Date date;
 
   @Column(name = "start_time")
-  private String startTime;
+  private Date startDateTime;
 
   @Column(name = "end_time")
-  private String endTime;
+  private Date endDateTime;
 
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "id", nullable = false)
+  @JoinColumn(name = "squad", referencedColumnName = "id")
   private Squad squad;
 
   @Column(name = "pics")

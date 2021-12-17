@@ -13,6 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.GenericGenerator;
 
 @Builder
 @Entity
@@ -25,6 +26,7 @@ public class Member {
 
   @Id
   @GeneratedValue(generator = "system-uuid")
+  @GenericGenerator(name = "system-uuid", strategy = "uuid2")
   @Column(name = "id", updatable = false, nullable = false)
   private String id;
 
