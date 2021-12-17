@@ -1,5 +1,7 @@
 package com.squadAlertSystem.squadalertsystem.service;
 
+import java.util.List;
+
 import com.squadAlertSystem.squadalertsystem.constant.Status;
 import com.squadAlertSystem.squadalertsystem.dto.response.PaginatedResponse;
 import com.squadAlertSystem.squadalertsystem.entity.Alert;
@@ -30,5 +32,9 @@ public class AlertService {
         paginatedResponse.setTotalElements(pages.getTotalElements());
 
         return paginatedResponse;
+    }
+
+    public List<Alert> getUserAlerts(String username) {
+        return alertRepository.findAllBySentToIgnoreCaseContaining(username);
     }
 }

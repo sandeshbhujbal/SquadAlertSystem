@@ -53,7 +53,7 @@ public class EmailRetrievalScheduler {
 //        fetchEmails();
 //    }
 
-    @Scheduled(cron = "0 */5 * * * *")
+    @Scheduled(cron = "0 */2 * * * *")
     public void fetchEmails() {
         Properties properties = new Properties();
         properties.put("mail.store.protocol", "imaps");

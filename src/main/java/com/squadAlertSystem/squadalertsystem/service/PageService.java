@@ -58,7 +58,7 @@ public class PageService {
     private Page buildPageEntity(PageRequest pageRequest) {
         return Page.builder()
           .sentBy("aman.dhaka")
-          .pageTo(pageRequest.getPagingEmailAddress().substring(4))
+          .pageTo(pageRequest.getPagingEmailAddress())
           .channel("Web")
           .createdDate(new Date())
           .severity(pageRequest.getSeverity())

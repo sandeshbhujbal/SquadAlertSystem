@@ -80,7 +80,7 @@ public class PageProcessor {
           .details(finalPage.getDetails())
           .summary(finalPage.getSummary())
           .picName(pic)
-          .triggerTime(finalPage.getCreatedDate())
+          .createdDate(finalPage.getCreatedDate())
           .notificationMedium(getNotificationMedium(alertConfigurations, finalPage.getSeverity()))
           .build())
       .collect(Collectors.toList());

@@ -1,5 +1,7 @@
 package com.squadAlertSystem.squadalertsystem.controller;
 
+import java.util.List;
+
 import com.squadAlertSystem.squadalertsystem.constant.Status;
 import com.squadAlertSystem.squadalertsystem.dto.response.PaginatedResponse;
 import com.squadAlertSystem.squadalertsystem.entity.Alert;
@@ -29,5 +31,11 @@ public class AlertController {
                                            @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
         return alertService.getAll(squad, status, pageable);
+    }
+
+    @GetMapping("/user-list")
+    public List<Alert> getUserAlerts(
+      @RequestParam String username) {
+        return alertService.getUserAlerts(username);
     }
 }

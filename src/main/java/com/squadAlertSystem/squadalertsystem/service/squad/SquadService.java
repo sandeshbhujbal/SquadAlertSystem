@@ -59,7 +59,7 @@ public class SquadService  {
       squad = squadRepository.findById(request.getId()).get();
       squad.getMembers().addAll(memberList);
       squad.getServices().addAll(serviceList);
-      squad.getAlertConfigurations().addAll(alertConfigurationList);
+      squad.getAlertConfigurations().addAll(new ArrayList<>(alertConfigurationList));
     }
     if(Objects.nonNull(request.getAlertConfigurations())) {
       alertConfigurationList = alertConfigurationRepository.saveAll(request.getAlertConfigurations());
@@ -88,8 +88,8 @@ public class SquadService  {
     return squadDetailResponse;
   }
 
-  private String buildPageId(String name) {
-    return "page-".concat(name).concat("@gdn-commerce.com");
+  private String buildPageId(String emailId) {
+    return "page-".concat(emailId);
   }
 
   private List<Member> validateServices(CreateSquadRequest request) {
