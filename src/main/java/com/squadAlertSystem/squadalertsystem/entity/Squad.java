@@ -14,12 +14,15 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.squadAlertSystem.squadalertsystem.dto.response.SquadDetailResponse;
+import com.squadAlertSystem.squadalertsystem.dto.response.SquadListingResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.GenericGenerator;
 
 @Builder
 @Entity
@@ -32,6 +35,7 @@ public class Squad {
 
   @Id
   @GeneratedValue(generator = "system-uuid")
+  @GenericGenerator(name = "system-uuid", strategy = "uuid2")
   @Column(name = "id", updatable = false, nullable = false)
   private String id;
 
@@ -78,5 +82,13 @@ public class Squad {
   @Override
   public int hashCode() {
     return getClass().hashCode();
+  }
+
+  public static SquadListingResponse toSquadListingResponse(Squad squad) {
+    return SquadListingResponse.builder()
+      .id(squad.getId())
+      .name(squad.getName())
+      .pageId(squad.getPageId())
+      .build();
   }
 }

@@ -5,4 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.squadAlertSystem.squadalertsystem.entity.Member;
 
 public interface MemberRepository extends JpaRepository<Member, String> {
+
+  Member findByName(String memberName);
 }

@@ -11,15 +11,18 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateSquadRequest {
+public class SquadListingRequest {
 
-  private String id;
+  private List<Filter> filters;
 
-  private String name;
+  @Data
+  @Builder
+  @AllArgsConstructor
+  @NoArgsConstructor
+  public static class Filter {
 
-  private String description;
+    private String field;
 
-  private List<String> members;
-
-  private List<String> services;
+    private String value;
+  }
 }
