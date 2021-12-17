@@ -1,12 +1,17 @@
 package com.squadAlertSystem.squadalertsystem.entity;
 
 import java.util.Objects;
+import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.squadAlertSystem.squadalertsystem.constant.Severity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,31 +23,43 @@ import org.hibernate.Hibernate;
 @Entity
 @Getter
 @Setter
-@Table(name = "member")
+@Table(name = "page")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Member {
+public class Page {
 
   @Id
   @GeneratedValue(generator = "system-uuid")
   @Column(name = "id", updatable = false, nullable = false)
   private String id;
 
-  @Column(name = "name")
-  private String name;
+  @Column(name = "channel")
+  private String channel;
 
-  @Column(name = "email")
-  private String email;
+  @Column(name = "severity")
+  private Severity severity;
 
-  @Column(name = "phone_number")
-  private String phoneNumber;
+  @Column(name = "summary")
+  private String summary;
+
+  @Column(name = "details")
+  private String details;
+
+  @Column(name = "sent_by")
+  private String sentBy;
+
+  @Column(name = "created_date")
+  private long createdDate;
+
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "page", fetch = FetchType.LAZY)
+  private Set<Alert> alerts;
 
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-    Member member = (Member) o;
-    return id != null && Objects.equals(id, member.id);
+    Page page = (Page) o;
+    return id != null && Objects.equals(id, page.id);
   }
 
   @Override

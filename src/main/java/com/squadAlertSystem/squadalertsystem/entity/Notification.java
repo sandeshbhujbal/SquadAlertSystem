@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.squadAlertSystem.squadalertsystem.constant.NotificationMedium;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,31 +19,37 @@ import org.hibernate.Hibernate;
 @Entity
 @Getter
 @Setter
-@Table(name = "member")
+@Table(name = "notification")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Member {
+public class Notification {
 
   @Id
   @GeneratedValue(generator = "system-uuid")
   @Column(name = "id", updatable = false, nullable = false)
   private String id;
 
-  @Column(name = "name")
-  private String name;
+  @Column(name = "notification_medium")
+  private NotificationMedium notificationMedium;
 
-  @Column(name = "email")
-  private String email;
+  @Column(name = "summary")
+  private String summary;
 
-  @Column(name = "phone_number")
-  private String phoneNumber;
+  @Column(name = "details")
+  private String details;
+
+  @Column(name = "sent_to")
+  private String sentTo;
+
+  @Column(name = "trigger_time")
+  private long triggerTime;
 
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-    Member member = (Member) o;
-    return id != null && Objects.equals(id, member.id);
+    Notification page = (Notification) o;
+    return id != null && Objects.equals(id, page.id);
   }
 
   @Override

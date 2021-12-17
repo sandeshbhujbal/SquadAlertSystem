@@ -1,5 +1,6 @@
 package com.squadAlertSystem.squadalertsystem.entity;
 
+import java.util.Objects;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,8 +12,22 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.Hibernate;
+
+@Builder
 @Entity
+@Getter
+@Setter
+@Table(name = "squad")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Squad {
 
   @Id
@@ -52,4 +67,16 @@ public class Squad {
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "squad", fetch = FetchType.LAZY)
   private Set<Calendar> calendars;
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+    Squad squad = (Squad) o;
+    return id != null && Objects.equals(id, squad.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return getClass().hashCode();
+  }
 }
