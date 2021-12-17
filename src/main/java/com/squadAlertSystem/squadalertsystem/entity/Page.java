@@ -1,5 +1,6 @@
 package com.squadAlertSystem.squadalertsystem.entity;
 
+import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -49,7 +50,7 @@ public class Page {
   private String sentBy;
 
   @Column(name = "created_date")
-  private long createdDate;
+  private Date createdDate;
 
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "page", fetch = FetchType.LAZY)
   private Set<Alert> alerts;

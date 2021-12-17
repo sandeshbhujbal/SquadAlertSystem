@@ -42,13 +42,15 @@ public class Calendar {
   private String endTime;
 
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "id", nullable = false)
+  @JoinColumn(name = "squad", referencedColumnName = "id")
   private Squad squad;
 
-  @Column(name = "pics")
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(name = "pic", referencedColumnName = "id")
   private Member pic;
 
-  @Column(name = "watcher")
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(name = "watcher", referencedColumnName = "id")
   private Member watcher;
 
   @Override

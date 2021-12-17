@@ -1,5 +1,6 @@
 package com.squadAlertSystem.squadalertsystem.entity;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -59,16 +60,16 @@ public class Alert {
   private long generatedDate;
 
   @Column(name = "sent_to")
-  private List<String> sentTo;
+  private String sentTo;
 
   @Column(name = "updated_date")
-  private long updatedDate;
+  private Date updatedDate;
 
   @Column(name = "updated_by")
   private String updatedBy;
 
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "id", nullable = false)
+  @JoinColumn(name = "page", referencedColumnName = "id")
   private Page page;
 
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "alert", fetch = FetchType.LAZY)

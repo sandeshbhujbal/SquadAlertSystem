@@ -41,7 +41,7 @@ public class Service {
   private String description;
 
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "id", nullable = false)
+  @JoinColumn(name = "squad", referencedColumnName = "id")
   private Squad squad;
 
   @Override

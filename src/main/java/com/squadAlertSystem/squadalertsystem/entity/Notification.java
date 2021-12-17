@@ -48,7 +48,7 @@ public class Notification {
   private long triggerTime;
 
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "id", nullable = false)
+  @JoinColumn(name = "alert", referencedColumnName = "id")
   private Alert alert;
 
   @Override
