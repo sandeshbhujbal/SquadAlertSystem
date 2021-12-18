@@ -40,8 +40,8 @@ public class SquadService  {
 
   public String createSquad(CreateSquadRequest request) {
     log.info("receive request to create squad {}", request);
-    List<Member> memberList = validateServices(request);
-    List<com.squadAlertSystem.squadalertsystem.entity.Service> serviceList = validateMembers(request);
+    List<Member> memberList = validateMembers(request);
+    List<com.squadAlertSystem.squadalertsystem.entity.Service> serviceList = validateServices(request);
     Squad squad = new Squad();
     if(StringUtils.isEmpty(request.getId())) {
       BeanUtils.copyProperties(request, squad);
@@ -66,6 +66,18 @@ public class SquadService  {
     return squadListingResponse;
   }
 
+  public List<Squad> getAllSquadsByMember(String member) {
+    log.info("fetching all squads by member {}", member);
+
+    final Member byName = memberRepository.findByName(member);
+
+    final List<Squad> squads = squadRepository.findAll();
+
+    return squads.stream()
+        .filter(squad -> squad.getMembers().contains(byName))
+        .collect(Collectors.toList());
+  }
+
   public SquadDetailResponse getSquadDetail(String squadId) {
     log.info("squad details");
     Squad squad = squadRepository.findById(squadId).get();
@@ -82,7 +94,7 @@ public class SquadService  {
     return "page-".concat(name).concat("@gdn-commerce.com");
   }
 
-  private List<Member> validateServices(CreateSquadRequest request) {
+  private List<Member> validateMembers(CreateSquadRequest request) {
      if(Objects.nonNull(request.getMembers())) {
        return request.getMembers().stream()
         .map(memberName -> memberRepository.findByName(memberName))
@@ -91,7 +103,7 @@ public class SquadService  {
     return new ArrayList<>();
   }
 
-  private List<com.squadAlertSystem.squadalertsystem.entity.Service> validateMembers(CreateSquadRequest request) {
+  private List<com.squadAlertSystem.squadalertsystem.entity.Service> validateServices(CreateSquadRequest request) {
     if(Objects.nonNull(request.getServices()))  {
       return request.getServices().stream()
         .map(serviceName -> serviceRepository.findByName(serviceName))
