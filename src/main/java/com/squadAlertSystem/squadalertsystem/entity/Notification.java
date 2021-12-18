@@ -61,7 +61,6 @@ public class Notification {
   @JoinColumn(name = "alert", referencedColumnName = "id")
   @ToString.Exclude
   @EqualsAndHashCode.Exclude
-  @JsonIgnore
   private Alert alert;
 
   @Override

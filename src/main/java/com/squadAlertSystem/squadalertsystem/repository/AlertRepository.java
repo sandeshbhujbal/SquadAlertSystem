@@ -14,6 +14,8 @@ public interface AlertRepository extends JpaRepository<Alert, String> {
 
     Page<Alert> findAllBySquadAndStatus(String squad, Status status, Pageable pageable);
 
+    List<Alert> findAllBySquadAndStatus(String squad, Status status);
+
     Page<Alert> findAllByStatus(Status status, Pageable pageable);
 
     List<Alert> findAllBySentToIgnoreCaseContaining(String username);
