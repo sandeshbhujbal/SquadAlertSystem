@@ -50,7 +50,7 @@ public class MemberService {
       }
       return Collections.emptyList();
     }
-    return memberRepository.findAll(constructSpec(memberName));
+    return memberRepository.findAll(constructSpec(memberName.toLowerCase()));
   }
 
   private Specification<Member> constructSpec(String memberName) {
