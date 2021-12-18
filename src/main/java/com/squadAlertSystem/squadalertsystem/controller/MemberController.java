@@ -1,7 +1,6 @@
 package com.squadAlertSystem.squadalertsystem.controller;
 
 import com.squadAlertSystem.squadalertsystem.dto.request.CreateMemberRequest;
-import com.squadAlertSystem.squadalertsystem.dto.response.GetMemberResponse;
 import com.squadAlertSystem.squadalertsystem.service.member.MemberService;
 import com.squadAlertSystem.squadalertsystem.entity.Member;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,7 @@ public class MemberController {
   }
 
   @GetMapping(path = "/list")
-  public List<GetMemberResponse> getMemberList(
+  public List<Member> getMemberList(
           @RequestParam(required = false) String squad_id,
           @RequestParam(required = false) String name){
     return memberService.getMemberList(squad_id, name);

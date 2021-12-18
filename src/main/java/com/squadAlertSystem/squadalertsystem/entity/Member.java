@@ -59,7 +59,7 @@ public class Member {
     return (Specification<Member>) (root, query, cb) -> {
       Predicate predicate = null;
       if(!StringUtils.isEmpty(name)) {
-        predicate = cb.like(root.<String>get("name"), "%" + name + "%");
+        predicate = cb.like(cb.lower(root.<String>get("name")), "%" + name + "%");
       }
       return predicate;
     };
