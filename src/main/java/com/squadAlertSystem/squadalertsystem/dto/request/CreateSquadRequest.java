@@ -2,6 +2,7 @@ package com.squadAlertSystem.squadalertsystem.dto.request;
 
 import java.util.List;
 
+import com.squadAlertSystem.squadalertsystem.entity.AlertConfiguration;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,7 +20,11 @@ public class CreateSquadRequest {
 
   private String description;
 
+  private String emailId;
+
   private List<String> members;
 
   private List<String> services;
+
+  private List<AlertConfiguration> alertConfigurations;
 }

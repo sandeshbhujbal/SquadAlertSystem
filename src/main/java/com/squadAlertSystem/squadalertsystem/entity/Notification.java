@@ -11,12 +11,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.squadAlertSystem.squadalertsystem.constant.NotificationMedium;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
+
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -45,7 +49,7 @@ public class Notification {
   private String details;
 
   @Column(name = "sent_to")
-  private String sentTo;
+  private String picName;
 
   @Column(name = "created_date")
   private Date createdDate;
@@ -55,6 +59,9 @@ public class Notification {
 
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "alert", referencedColumnName = "id")
+  @ToString.Exclude
+  @EqualsAndHashCode.Exclude
+  @JsonIgnore
   private Alert alert;
 
   @Override

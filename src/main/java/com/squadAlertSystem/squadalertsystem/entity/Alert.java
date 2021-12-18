@@ -15,13 +15,17 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.squadAlertSystem.squadalertsystem.constant.Severity;
 import com.squadAlertSystem.squadalertsystem.constant.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
+
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -63,7 +67,7 @@ public class Alert {
 
   //comma separated names of users
   @Column(name = "sent_to")
-  private String sentTo;
+  private String sentTo; //comma-separated pics
 
   @Column(name = "updated_date")
   private Date updatedDate;
@@ -72,6 +76,9 @@ public class Alert {
   private String updatedBy;
 
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "alert", fetch = FetchType.LAZY)
+  @ToString.Exclude
+  @EqualsAndHashCode.Exclude
+  @JsonIgnore
   private Set<Notification> notifications;
 
   @Override

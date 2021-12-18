@@ -3,8 +3,11 @@ package com.squadAlertSystem.squadalertsystem.scheduler;
 import com.squadAlertSystem.squadalertsystem.config.EmailConfiguration;
 import com.squadAlertSystem.squadalertsystem.constant.Severity;
 import com.squadAlertSystem.squadalertsystem.entity.Page;
+import com.squadAlertSystem.squadalertsystem.entity.Squad;
 import com.squadAlertSystem.squadalertsystem.entity.SystemParam;
+import com.squadAlertSystem.squadalertsystem.processor.PageProcessor;
 import com.squadAlertSystem.squadalertsystem.repository.PageRepository;
+import com.squadAlertSystem.squadalertsystem.repository.SquadRepository;
 import com.squadAlertSystem.squadalertsystem.service.SystemParamService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +19,6 @@ import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -40,12 +42,18 @@ public class EmailRetrievalScheduler {
     @Autowired
     private SystemParamService systemParamService;
 
-    @PostConstruct
-    public void init() {
-        fetchEmails();
-    }
+    @Autowired
+    private PageProcessor pageProcessor;
 
-    @Scheduled(cron = "0 */30 * * * *")
+    @Autowired
+    private SquadRepository squadRepository;
+
+//    @PostConstruct
+//    public void init() {
+//        fetchEmails();
+//    }
+
+    @Scheduled(cron = "0 */2 * * * *")
     public void fetchEmails() {
         Properties properties = new Properties();
         properties.put("mail.store.protocol", "imaps");
@@ -72,15 +80,15 @@ public class EmailRetrievalScheduler {
                 .map(this::buildPageEntity)
                 .collect(Collectors.toList());
 
-            if (!pages.isEmpty()) {
-                pageRepository.saveAll(pages);
-
+            if(!pages.isEmpty()) {
+                pages.forEach(page -> pageProcessor.processPage(page, getSquad(page)));
+            }
+            if(!pages.isEmpty()) {
                 DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss aa");
-
                 systemParamService.save(SystemParam.builder()
-                    .key(LAST_EMAIL_FETCHED_AT)
-                    .value(dateFormat.format(new Date()))
-                    .build());
+                  .key(LAST_EMAIL_FETCHED_AT)
+                  .value(dateFormat.format(new Date()))
+                  .build());
             }
 
             // close the store and folder objects
@@ -89,6 +97,11 @@ public class EmailRetrievalScheduler {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    //page-xyz@gmail.com
+    private Squad getSquad(Page page) {
+        return squadRepository.findByPageId(page.getPageTo());
     }
 
     private boolean isEmailAlreadyReceived(Message message) {
@@ -128,7 +141,7 @@ public class EmailRetrievalScheduler {
 
             return Page.builder()
                 .sentBy(new InternetAddress(message.getFrom()[0].toString()).getPersonal())
-                .pageTo(message.getRecipients(Message.RecipientType.TO)[0].toString())
+                .pageTo("page-".concat(message.getRecipients(Message.RecipientType.TO)[0].toString()))
                 .channel("Email")
                 .createdDate(new Date())
                 .severity(severity)
