@@ -71,7 +71,7 @@ public class PageProcessor {
       .status(Status.OPEN)
       .sentBy(page.getSentBy())
       .generatedDate(page.getCreatedDate())
-      .sentTo(picSet.stream().collect(Collectors.joining()))
+      .sentTo(picSet.stream().collect(Collectors.joining(",")))
       .build();
     //save alert
     alertRepository.save(alert);
