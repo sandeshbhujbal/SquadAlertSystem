@@ -70,7 +70,13 @@ public class EmailRetrievalScheduler {
                 .map(this::buildPageEntity)
                 .collect(Collectors.toList());
 
-            pages.forEach(page -> pageProcessor.processPage(page));
+            pages.forEach(page -> {
+                try {
+                    pageProcessor.processPage(page);
+                } catch(Exception e) {
+                    log.info("error while processing page from {}, {}", page.getSentBy(), e.getMessage());
+                }
+            });
 
             DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss aa");
 
