@@ -42,7 +42,7 @@ public class CalendarService {
       .build();
 
     if (!CollectionUtils.isEmpty(request.getPicNames())) {
-      calendar.setPics(String.join(", ", request.getPicNames()));
+      calendar.setPics(String.join(",", request.getPicNames()));
     }
 
     Squad squad = squadRepository.findById(request.getSquadId()).get();
@@ -70,7 +70,7 @@ public class CalendarService {
   }
 
   public List<CalendarResponse> listCalendarByUser(String username) {
-    return calendarRepository.findByPicsLike("%" + username + "%").stream()
+    return calendarRepository.findAllByPicsIgnoreCaseContaining(username).stream()
             .map(this::toCalendarResponse).collect(Collectors.toList());
   }
 

@@ -42,7 +42,7 @@ public class NotificationService {
         List<Notification> notifications = new ArrayList<>();
 
         squads.forEach(squad -> {
-            final List<Alert> alerts = alertService.findAllBySquadAndStatus(squad.getName(), Status.OPEN);
+            final List<Alert> alerts = alertRepository.findAllBySquadAndStatus(squad.getName(), Status.OPEN);
 
             alerts.forEach(alert -> {
                 final List<Notification> notificationList = alert.getNotifications()

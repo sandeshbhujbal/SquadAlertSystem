@@ -7,5 +7,5 @@ import com.squadAlertSystem.squadalertsystem.entity.Calendar;
 import java.util.List;
 
 public interface CalendarRepository extends JpaRepository<Calendar, String> {
-    List<Calendar> findByPicsLike(String name);
+    List<Calendar> findAllByPicsIgnoreCaseContaining(String name);
 }
