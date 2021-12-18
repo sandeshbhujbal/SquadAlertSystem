@@ -59,7 +59,7 @@ public class Squad {
   private Set<Member> members;
 
 
-  @ManyToMany(fetch = FetchType.LAZY)
+  @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(
     name = "squad_alert_configuration_mapping",
     joinColumns = {@JoinColumn(name = "squad_id")},
@@ -67,7 +67,7 @@ public class Squad {
   )
   private Set<AlertConfiguration> alertConfigurations;
 
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "squad", fetch = FetchType.LAZY)
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "squad", fetch = FetchType.EAGER)
   private Set<Calendar> calendars;
 
   @Override

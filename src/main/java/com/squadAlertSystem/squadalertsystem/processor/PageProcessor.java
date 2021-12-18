@@ -1,31 +1,19 @@
 package com.squadAlertSystem.squadalertsystem.processor;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
-
+import com.squadAlertSystem.squadalertsystem.constant.NotificationMedium;
+import com.squadAlertSystem.squadalertsystem.constant.Severity;
+import com.squadAlertSystem.squadalertsystem.constant.Status;
+import com.squadAlertSystem.squadalertsystem.entity.Calendar;
+import com.squadAlertSystem.squadalertsystem.entity.*;
+import com.squadAlertSystem.squadalertsystem.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
-import com.squadAlertSystem.squadalertsystem.constant.NotificationMedium;
-import com.squadAlertSystem.squadalertsystem.constant.Severity;
-import com.squadAlertSystem.squadalertsystem.constant.Status;
-import com.squadAlertSystem.squadalertsystem.entity.Alert;
-import com.squadAlertSystem.squadalertsystem.entity.AlertConfiguration;
-import com.squadAlertSystem.squadalertsystem.entity.Calendar;
-import com.squadAlertSystem.squadalertsystem.entity.Notification;
-import com.squadAlertSystem.squadalertsystem.entity.Page;
-import com.squadAlertSystem.squadalertsystem.entity.Squad;
-import com.squadAlertSystem.squadalertsystem.repository.AlertConfigurationRepository;
-import com.squadAlertSystem.squadalertsystem.repository.AlertRepository;
-import com.squadAlertSystem.squadalertsystem.repository.MemberRepository;
-import com.squadAlertSystem.squadalertsystem.repository.NotificationRepository;
-import com.squadAlertSystem.squadalertsystem.repository.PageRepository;
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 @Component
 public class PageProcessor {
@@ -40,7 +28,7 @@ public class PageProcessor {
   private NotificationRepository notificationRepository;
 
   @Autowired
-  private AlertConfigurationRepository alertConfigurationRepository;
+  private SquadRepository squadRepository;
 
   @Autowired
   private MemberRepository memberRepository;
@@ -48,10 +36,14 @@ public class PageProcessor {
   @Autowired
   private JavaMailSender javaMailSender;
 
-  public void processPage(Page page, Squad squad) {
+  public void processPage(Page page) {
     //Save page
     page = pageRepository.save(page);
     Page finalPage = page;
+
+    // Fetch squad
+    final Squad squad = squadRepository.findByPageId(page.getPageTo());
+
     //fetch alert_configuration
     Set<AlertConfiguration> alertConfigurations = squad.getAlertConfigurations();
     //get PIC
@@ -73,17 +65,25 @@ public class PageProcessor {
       .build();
     //save alert
     alertRepository.save(alert);
+
+    final List<NotificationMedium> notificationMediums = getNotificationMediums(alertConfigurations, finalPage.getSeverity());
+
     //build Notification
-    List<Notification> notificationList = picSet.stream()
-      .map(pic -> Notification.builder()
-          .alert(alert)
-          .details(finalPage.getDetails())
-          .summary(finalPage.getSummary())
-          .picName(pic)
-          .createdDate(finalPage.getCreatedDate())
-          .notificationMedium(getNotificationMedium(alertConfigurations, finalPage.getSeverity()))
-          .build())
-      .collect(Collectors.toList());
+    List<Notification> notificationList = new LinkedList<>();
+        picSet.forEach(pic ->
+            {
+              final List<Notification> notifications = notificationMediums.stream()
+                  .map(notificationMedium -> Notification.builder()
+                      .alert(alert)
+                      .details(finalPage.getDetails())
+                      .summary(finalPage.getSummary())
+                      .picName(pic)
+                      .createdDate(finalPage.getCreatedDate())
+                      .notificationMedium(notificationMedium)
+                      .build()).collect(Collectors.toList());
+              notificationList.addAll(notifications);
+            }
+        );
     //save notification
     notificationRepository.saveAll(notificationList);
 
@@ -109,10 +109,11 @@ public class PageProcessor {
     return memberRepository.findByName(sentTo).getEmail();
   }
 
-  private NotificationMedium getNotificationMedium(Set<AlertConfiguration> alertConfigurations, Severity severity) {
+  private List<NotificationMedium> getNotificationMediums(Set<AlertConfiguration> alertConfigurations, Severity severity) {
     return alertConfigurations.stream()
       .filter(alertConfiguration -> alertConfiguration.getSeverity().equals(severity))
-      .findAny().get().getNotificationMedium();
+        .map(AlertConfiguration::getNotificationMedium)
+        .collect(Collectors.toList());
   }
 
   private boolean filterTime(Date startDateTime, Date endDateTime, Date createdDate) {

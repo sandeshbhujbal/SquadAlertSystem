@@ -62,7 +62,7 @@ public class SquadService  {
       squad.getAlertConfigurations().addAll(new ArrayList<>(alertConfigurationList));
     }
     if(Objects.nonNull(request.getAlertConfigurations())) {
-      alertConfigurationList = alertConfigurationRepository.saveAll(request.getAlertConfigurations());
+      alertConfigurationRepository.saveAll(request.getAlertConfigurations());
     }
     squad = squadRepository.save(squad);
     return squad.getId();
