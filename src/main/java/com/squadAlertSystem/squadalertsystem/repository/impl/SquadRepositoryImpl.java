@@ -45,7 +45,7 @@ public class SquadRepositoryImpl implements CustomSquadRepository {
     List<Predicate> predicates = new ArrayList<>();
     if (!CollectionUtils.isEmpty(filters)) {
       for (SquadListingRequest.Filter filter : filters) {
-        if (StringUtils.isEmpty(filter.getValue())) {
+        if (!StringUtils.isEmpty(filter.getValue())) {
           predicates
             .add(builder.like(builder.lower(root.get(filter.getField())), "%" + filter.getValue().toLowerCase() + "%"));
         }

@@ -1,5 +1,13 @@
 package com.squadAlertSystem.squadalertsystem.processor;
 
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
+
 import com.squadAlertSystem.squadalertsystem.constant.NotificationMedium;
 import com.squadAlertSystem.squadalertsystem.constant.Severity;
 import com.squadAlertSystem.squadalertsystem.constant.Status;
@@ -47,11 +55,13 @@ public class PageProcessor {
     //fetch alert_configuration
     Set<AlertConfiguration> alertConfigurations = squad.getAlertConfigurations();
     //get PIC
-    Calendar currentTimeCalendar = squad.getCalendars().stream()
+    List<Calendar> currentTimeCalendar = squad.getCalendars().stream()
       .filter(calendar -> filterTime(calendar.getStartDateTime(), calendar.getEndDateTime(), finalPage.getCreatedDate()))
-      .findFirst()
-      .get();
-    Set<String> picSet = Arrays.stream(currentTimeCalendar.getPics().split(",")).collect(Collectors.toSet());
+      .collect(Collectors.toList());
+    Set<String> picSet = new HashSet<>();
+    currentTimeCalendar.forEach(calendar -> {
+      picSet.addAll(Arrays.stream(calendar.getPics().split(",")).collect(Collectors.toSet()));
+    });
     //build Alert
     Alert alert = Alert.builder()
       .summary(page.getSummary())
@@ -61,7 +71,7 @@ public class PageProcessor {
       .status(Status.OPEN)
       .sentBy(page.getSentBy())
       .generatedDate(page.getCreatedDate())
-      .sentTo(currentTimeCalendar.getPics())
+      .sentTo(picSet.stream().collect(Collectors.joining()))
       .build();
     //save alert
     alertRepository.save(alert);

@@ -38,6 +38,11 @@ public class EmailRetrievalScheduler {
     @Autowired
     private PageProcessor pageProcessor;
 
+//    @PostConstruct
+//    public void init() {
+//        fetchEmails();
+//    }
+
     @Scheduled(cron = "0 */1 * * * *")
     public void fetchEmails() {
         Properties properties = new Properties();
