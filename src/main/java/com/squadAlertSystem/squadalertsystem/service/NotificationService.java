@@ -5,6 +5,8 @@ import com.squadAlertSystem.squadalertsystem.constant.Status;
 import com.squadAlertSystem.squadalertsystem.entity.Alert;
 import com.squadAlertSystem.squadalertsystem.entity.Notification;
 import com.squadAlertSystem.squadalertsystem.entity.Squad;
+import com.squadAlertSystem.squadalertsystem.repository.AlertRepository;
+import com.squadAlertSystem.squadalertsystem.repository.NotificationRepository;
 import com.squadAlertSystem.squadalertsystem.service.squad.SquadService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,12 @@ public class NotificationService {
     @Autowired
     private SquadService squadService;
 
+    @Autowired
+    private NotificationRepository notificationRepository;
+
+    @Autowired
+    private AlertRepository alertRepository;
+
     public List<Notification> getNotificationByUserAndMedium(String user, NotificationMedium medium) {
 
         final List<Squad> squads = squadService.getAllSquadsByMember(user);
@@ -48,4 +56,19 @@ public class NotificationService {
 
         return notifications;
     }
+
+  public Boolean acknowledgeNotification(String notificationId, Status status) {
+        Notification notification;
+        try {
+            notification = notificationRepository.findFirstById(notificationId);
+            Alert alert = notification.getAlert();
+            alert.setStatus(status);
+            alertRepository.save(alert);
+            notificationRepository.save(notification);
+        } catch(Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+  }
 }
