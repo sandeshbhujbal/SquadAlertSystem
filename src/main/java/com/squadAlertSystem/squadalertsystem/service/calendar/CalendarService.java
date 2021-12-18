@@ -69,4 +69,9 @@ public class CalendarService {
 
   }
 
+  public List<CalendarResponse> listCalendarByUser(String username) {
+    return calendarRepository.findByPicsLike("%" + username + "%").stream()
+            .map(this::toCalendarResponse).collect(Collectors.toList());
+  }
+
 }

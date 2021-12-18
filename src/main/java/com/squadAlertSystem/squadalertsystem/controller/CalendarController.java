@@ -46,4 +46,10 @@ public class CalendarController {
       .build();
   }
 
+  @GetMapping(path = "/calendar/user-list")
+  public List<CalendarResponse> getCalenderListByUser(
+          @RequestParam(value = "username") String username) {
+    return calendarService.listCalendarByUser(username);
+  }
+
 }
