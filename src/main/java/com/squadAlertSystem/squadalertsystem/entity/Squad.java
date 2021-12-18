@@ -14,12 +14,16 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.squadAlertSystem.squadalertsystem.dto.response.SquadListingResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
+
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -56,6 +60,8 @@ public class Squad {
     joinColumns = {@JoinColumn(name = "squad_id")},
     inverseJoinColumns = {@JoinColumn(name = "member_id")}
   )
+  @EqualsAndHashCode.Exclude
+  @ToString.Exclude
   private Set<Member> members;
 
 
@@ -65,9 +71,13 @@ public class Squad {
     joinColumns = {@JoinColumn(name = "squad_id")},
     inverseJoinColumns = {@JoinColumn(name = "alert_configuration_id")}
   )
+  @EqualsAndHashCode.Exclude
+  @ToString.Exclude
   private Set<AlertConfiguration> alertConfigurations;
 
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "squad", fetch = FetchType.LAZY)
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "squad", fetch = FetchType.EAGER)
+  @EqualsAndHashCode.Exclude
+  @ToString.Exclude
   private Set<Calendar> calendars;
 
   @Override

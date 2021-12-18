@@ -49,7 +49,7 @@ public class SquadService  {
     List<com.squadAlertSystem.squadalertsystem.entity.Service> serviceList = validateServices(request);
     Squad squad = new Squad();
     BeanUtils.copyProperties(request, squad);
-    List<AlertConfiguration> alertConfigurationList = request.getAlertConfigurations();
+    List<AlertConfiguration> alertConfigurationList = request.getAlertConfigurations() == null? new ArrayList<>(): request.getAlertConfigurations();
     if(StringUtils.isEmpty(request.getId())) {
       squad.setMembers(new HashSet<>(memberList));
       squad.setServices(new HashSet<>(serviceList));
