@@ -6,6 +6,7 @@ import com.squadAlertSystem.squadalertsystem.dto.request.AddMemberRequest;
 import com.squadAlertSystem.squadalertsystem.entity.Squad;
 import com.squadAlertSystem.squadalertsystem.service.squad.SquadService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,6 +21,7 @@ import com.squadAlertSystem.squadalertsystem.dto.response.SquadListingResponse;
 
 @RestController
 @RequestMapping(SquadController.BASE_URI)
+@CrossOrigin
 public class SquadController {
 
   public static final String BASE_URI = "/squad";

@@ -13,6 +13,7 @@ import javax.validation.constraints.NotNull;
  */
 @RestController
 @RequestMapping("/systemParams")
+@CrossOrigin
 public class SystemParamController {
 
     @Autowired

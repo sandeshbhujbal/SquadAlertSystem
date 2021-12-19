@@ -8,6 +8,7 @@ import com.squadAlertSystem.squadalertsystem.dto.request.CalendarListRequest;
 import com.squadAlertSystem.squadalertsystem.dto.request.CalendarSaveRequest;
 import com.squadAlertSystem.squadalertsystem.dto.response.CalendarResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(CalendarController.BASE_URI)
+@CrossOrigin
 public class CalendarController {
 
   public static final String BASE_URI = "/calendar";
