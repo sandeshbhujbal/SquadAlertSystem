@@ -35,18 +35,10 @@ public class MemberController {
           @RequestParam(required = false) String name){
     return memberService.getMemberList(squad_id, name);
   }
-
-  @GetMapping(path = "/listMembers")
-  public Member getCacheCount() {
-
-    memberService.printMessage();
-
-    return Member.builder()
-      .id("test")
-      .email("test1")
-      .name("name")
-      .phoneNumber("123456789")
-      .build();
+  
+  @GetMapping(path = "/listAllMembers")
+  public List<Member> listAllMembers() {
+    return memberService.listAllMembers();
   }
 
 }

@@ -27,10 +27,6 @@ public class MemberService {
   @Autowired
   private SquadRepository squadRepository;
 
-  public void printMessage() {
-    System.out.println("hellooooo priting message");
-  }
-
   public String createMember(CreateMemberRequest request) {
     Member newMember = Member.builder()
             .id(request.getId())
@@ -51,6 +47,10 @@ public class MemberService {
       return Collections.emptyList();
     }
     return memberRepository.findAll(constructSpec(memberName.toLowerCase()));
+  }
+
+  public List<Member> listAllMembers() {
+    return memberRepository.findAll();
   }
 
   private Specification<Member> constructSpec(String memberName) {
