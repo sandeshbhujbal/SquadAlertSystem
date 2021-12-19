@@ -134,7 +134,7 @@ public class EmailRetrievalScheduler {
 
             return Page.builder()
                 .sentBy(sentBy)
-                .pageTo("page-" + pageTo)
+                .pageTo(pageTo)
                 .channel("Email")
                 .createdDate(new Date())
                 .severity(severity)
