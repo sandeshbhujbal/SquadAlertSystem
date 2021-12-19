@@ -5,6 +5,7 @@ import java.util.List;
 import com.squadAlertSystem.squadalertsystem.constant.Status;
 import com.squadAlertSystem.squadalertsystem.dto.response.PaginatedResponse;
 import com.squadAlertSystem.squadalertsystem.entity.Alert;
+import com.squadAlertSystem.squadalertsystem.entity.Notification;
 import com.squadAlertSystem.squadalertsystem.repository.AlertRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -46,5 +47,18 @@ public class AlertService {
         final Page<Alert> alertPages = alertRepository.findAllBySquadAndStatus(squad, status, pageable);
 
         return alertPages.getContent();
+    }
+
+    public Boolean acknowledgeAlert(String alertId, Status status) {
+        Alert alert;
+        try {
+            alert = alertRepository.findFirstById(alertId);
+            alert.setStatus(status);
+            alertRepository.save(alert);
+        } catch(Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 }
